@@ -5,7 +5,7 @@
 | Product | Usage Pulse |
 | Document status | Active product specification and roadmap |
 | Current release | v1.5.0 open-source release |
-| Next target | Post-1.5 reliability and portability milestones |
+| Next target | v1.6 controls, alerts, and portability |
 | Product type | Local-first personal usage dashboard |
 | Primary platform | Responsive web app |
 | Owner | Daniel Xu |
@@ -168,6 +168,25 @@ Warnings should become stronger as the situation becomes more urgent, but the pr
 - Runway must include confidence and avoid misleading results from irregular top-ups.
 - The user must be able to distinguish purchases from consumption events.
 - Tests must cover calculations, persistence, validation, and critical UI states.
+
+### Implemented in the v1.6 candidate
+
+- Configurable low-credit threshold, timezone, reset cadence, stale interval, and retention limit
+- Separate preferences for low-credit, stale-reading, and reset-due notifications
+- Deduplicated browser notification dispatch
+- Reading correction, individual deletion, and confirmed history clearing
+- JSON export and validated JSON import
+- CSV export
+- Empty-history state without a user-specific sample balance
+- Unit tests for threshold crossings, portable imports, and CSV serialization
+
+### Remaining after v1.6
+
+- Full-product reset covering settings and alert-event history
+- Confidence-aware runway and time-to-reset forecasting
+- Purchase, reset, and adjustment event classification
+- Automated accessibility testing and stronger modal focus management
+- Optional supported synchronization or browser companion
 
 ## 10. Functional requirements
 
@@ -398,21 +417,23 @@ Opt-in analytics may be introduced later, but the product must work fully withou
 - Responsive dashboard
 - Public documentation, licensing, authorship, and safety checks
 
-### Milestone A — reliability and control
+### Candidate — v1.6 controls and portability
+
+- Working low-credit, stale-reading, and reset-due alerts
+- Configurable threshold, timezone, reset cadence, freshness, and retention
+- Reading editing, deletion, and history clearing
+- JSON backup and restore
+- CSV export
+- Expanded unit coverage
+
+### Milestone A — deeper reliability and control
 
 - Improved first-run setup
-- Explicit timezone and reset cadence
-- Custom threshold
-- Reading correction and deletion
 - Robust validation
 - Calculation unit tests
 
-### Milestone B — alerts and portability
+### Milestone B — advanced portability
 
-- Working threshold notifications
-- Stale and reset-due alerts
-- JSON and CSV export
-- Validated JSON import
 - Full local-data reset
 
 ### Milestone C — improved insight

@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Added
+
+- Working low-credit, stale-reading, and reset-due browser notifications with per-event deduplication.
+- User controls for threshold, timezone, reset cadence, stale interval, retention, and alert preferences.
+- Reading editing, individual deletion, confirmed history clearing, JSON backup and restore, and CSV export.
+- Empty-history states and unit tests for thresholds, imports, and CSV serialization.
+
 ## [1.5.0] - 2026-08-08
 
 ### Added

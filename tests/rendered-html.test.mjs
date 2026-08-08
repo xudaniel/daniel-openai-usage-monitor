@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
+import { crossedThreshold, parseUsageImport, readingsToCsv } from "../app/usage-data.mjs";
 
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -43,4 +44,28 @@ test("public source contains no private hosting metadata or credentials", async 
   ]);
   const publicText = `${page}\n${readme}\n${prd}`;
   assert.doesNotMatch(publicText, /appgprj_|art_v1_|cs_live_|FF1E-|DCC9-|8844-/i);
+});
+
+test("detects only a new low-credit threshold crossing", () => {
+  assert.equal(crossedThreshold(200, 125, 125), true);
+  assert.equal(crossedThreshold(125, 100, 125), false);
+  assert.equal(crossedThreshold(200, 150, 125), false);
+});
+
+test("validates portable Usage Pulse imports", () => {
+  const payload = parseUsageImport(JSON.stringify({ readings: [{
+    id: "reading-1",
+    credits: 450.4,
+    weeklyRemaining: 75,
+    capturedAt: "2026-08-08T12:00:00.000Z",
+    source: "manual",
+  }] }));
+  assert.equal(payload.readings[0].credits, 450);
+  assert.throws(() => parseUsageImport('{"readings":[{"id":"bad","credits":-1}]}'), /invalid reading/i);
+});
+
+test("exports spreadsheet-friendly CSV with escaped fields", () => {
+  const csv = readingsToCsv([{ id: 'one,"two', credits: 10, weeklyRemaining: 20, capturedAt: "2026-08-08T12:00:00.000Z", source: "manual" }]);
+  assert.match(csv, /^id,credits,weeklyRemaining,capturedAt,source/);
+  assert.match(csv, /"one,""two"/);
 });
