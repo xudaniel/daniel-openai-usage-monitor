@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose an improvement to Usage Pulse
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: User need
+      description: What decision or workflow should this improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: privacy
+    attributes:
+      label: Privacy impact
+      description: Explain whether this changes what data is collected, stored, or transmitted.
+    validations:
+      required: true
