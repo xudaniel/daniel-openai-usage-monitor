@@ -4,6 +4,8 @@
 
 > Know your Codex runway before it runs out.
 
+Created and maintained by **Daniel Xu** (full name: **Daniel Yuanpeng Xu**), available on GitHub as [@xudaniel](https://github.com/xudaniel). See [AUTHORS.md](AUTHORS.md) for the project authorship statement.
+
 Usage Pulse is a private, local-first dashboard for monitoring Codex credits, included weekly usage, reset timing, and consumption pace. It turns two numbers from the official Codex usage page into a clearer operational view: **how much capacity is left, how quickly it is changing, and when action may be needed**.
 
 **Live app:** [usage-pulse-daniel.danyelxu.chatgpt.site](https://usage-pulse-daniel.danyelxu.chatgpt.site)
@@ -222,4 +224,4 @@ Issues and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING
 
 ## License
 
-Usage Pulse is available under the [MIT License](LICENSE).
+Usage Pulse is authored by **Daniel Xu** and available under the [MIT License](LICENSE).

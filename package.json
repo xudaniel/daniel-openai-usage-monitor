@@ -2,6 +2,7 @@
   "name": "daniel-openai-usage-monitor",
   "version": "0.1.0",
   "description": "A privacy-first, local dashboard for tracking Codex credits, weekly usage, reset timing, and runway.",
+  "author": "Daniel Yuanpeng Xu (Daniel Xu) (https://github.com/xudaniel)",
   "private": true,
   "license": "MIT",
   "repository": {
