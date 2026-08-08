@@ -21,6 +21,20 @@ Version 1.5.0 is the first major public release of the repository. It includes a
 - [Review the changelog](CHANGELOG.md)
 - [Read the product requirements and roadmap](PRD.md)
 
+## In development for v1.6
+
+The v1.6 candidate adds the first complete control and portability layer:
+
+- Working, deduplicated low-credit, stale-reading, and reset-due browser alerts
+- Configurable low-credit threshold, timezone, reset cadence, stale interval, and history retention
+- Separate notification preferences for each alert type
+- Reading correction and deletion
+- Full reading-history clearing with confirmation
+- JSON backup and validated restore
+- CSV export for spreadsheet analysis
+- Empty states that do not seed another user’s sample balance
+- Unit coverage for threshold crossings, imports, and CSV exports
+
 ## Why Usage Pulse exists
 
 Codex usage is easy to understand at a single moment but harder to reason about over time. A balance alone does not answer questions such as:
@@ -34,7 +48,7 @@ Usage Pulse is designed to answer those questions without collecting account cre
 
 ## Current product
 
-Release 1.5.0 provides:
+The current v1.6 candidate provides:
 
 - **Credit balance monitoring** with a visible low-balance threshold.
 - **Included weekly usage tracking** as a percentage remaining.
@@ -46,6 +60,9 @@ Release 1.5.0 provides:
 - **Device-local persistence** using browser `localStorage`.
 - **Responsive design** for desktop, tablet, and mobile.
 - **Direct access** to the official Codex usage dashboard for source verification.
+- **Configurable controls** for thresholds, timezone, cadence, freshness, and retention.
+- **Working browser alerts** with per-event deduplication.
+- **History management** with edit, delete, clear, JSON backup/restore, and CSV export.
 
 ## How it works
 
@@ -113,14 +130,14 @@ No D1 database or R2 bucket is configured. Current usage history stays in browse
 
 Runway is an estimate, not a billing forecast. It uses the average credit decrease between saved readings that show consumption. Model choice, context size, reasoning effort, tools, images, and task duration can all change actual usage.
 
-## Known limitations in v1.5
+## Known limitations in the v1.6 candidate
 
 - Balance synchronization is manual.
-- The alert preference and browser permission flow exist, but automatic threshold-notification dispatch is not yet complete.
 - Data does not sync across browsers or devices.
-- There is no export, import, or reset-history control in the UI.
 - Runway becomes meaningful only after multiple credit-decrease readings have been saved.
-- The low-credit threshold is currently fixed at 125 credits.
+- Runway does not yet display sample size or a confidence rating.
+- Purchases and reset events are not yet classified separately from ordinary readings.
+- Clearing reading history does not clear preferences; a separate full-product reset remains planned.
 
 These limitations are addressed in the [Product Requirements Document](PRD.md) as part of the post-1.5 roadmap.
 
@@ -200,6 +217,8 @@ type Reading = {
 };
 ```
 
+User controls are stored as a local `Settings` object containing the low-credit threshold, timezone, reset cadence, retention limit, stale interval, and notification preferences.
+
 Readings are stored under `usage-pulse-readings`; the alert preference is stored under `usage-pulse-alerts`.
 The configured reset time is stored under `usage-pulse-reset-at`.
 
@@ -213,11 +232,7 @@ The configured reset time is stored under `usage-pulse-reset-at`.
 
 ## Roadmap
 
-- Explicit timezone selection
-- Working low-credit and reset notifications
-- Custom alert thresholds
-- CSV/JSON export and import
-- History deletion and full local reset
+- Full-product reset covering both history and preferences
 - Improved burn-rate and confidence calculations
 - Installable PWA behavior
 - Optional browser companion for user-authorized dashboard capture
