@@ -1,5 +1,6 @@
 # Usage Pulse
 
+[![Release](https://img.shields.io/badge/release-v1.5.0-2563eb.svg)](https://github.com/xudaniel/daniel-openai-usage-monitor/releases/tag/v1.5.0)
 [![MIT License](https://img.shields.io/badge/license-MIT-111827.svg)](LICENSE)
 
 > Know your Codex runway before it runs out.
@@ -11,6 +12,14 @@ Usage Pulse is a private, local-first dashboard for monitoring Codex credits, in
 **Live app:** [usage-pulse-daniel.danyelxu.chatgpt.site](https://usage-pulse-daniel.danyelxu.chatgpt.site)
 
 ![Usage Pulse social preview](public/og.png)
+
+## Release 1.5.0
+
+Version 1.5.0 is the first major public release of the repository. It includes a clean open-source history, configurable reset timing, local reading history, public-safety tests, expanded product documentation, and formal authorship and contribution metadata.
+
+- [Read the 1.5.0 release notes](https://github.com/xudaniel/daniel-openai-usage-monitor/releases/tag/v1.5.0)
+- [Review the changelog](CHANGELOG.md)
+- [Read the product requirements and roadmap](PRD.md)
 
 ## Why Usage Pulse exists
 
@@ -25,7 +34,7 @@ Usage Pulse is designed to answer those questions without collecting account cre
 
 ## Current product
 
-The current release provides:
+Release 1.5.0 provides:
 
 - **Credit balance monitoring** with a visible low-balance threshold.
 - **Included weekly usage tracking** as a percentage remaining.
@@ -78,6 +87,7 @@ Usage Pulse follows a minimal-data design.
 - Reading timestamp
 - Reading source label
 - Alert preference
+- Configured reset date and time
 
 ### Never requested or stored
 
@@ -112,14 +122,13 @@ Runway is an estimate, not a billing forecast. It uses the average credit decrea
 - Runway becomes meaningful only after multiple credit-decrease readings have been saved.
 - The low-credit threshold is currently fixed at 125 credits.
 
-These limitations are addressed in the [Product Requirements Document](PRD.md) as part of the v1 roadmap.
+These limitations are addressed in the [Product Requirements Document](PRD.md) as part of the post-1.5 roadmap.
 
 ## Technology
 
 - React 19
 - TypeScript
 - vinext and Vite
-- Cloudflare Workers-compatible output
 - Tailwind CSS build tooling with product styling in `app/globals.css`
 - Browser `localStorage` for device-local state
 - Cloudflare Workers-compatible hosting
@@ -135,6 +144,8 @@ daniel-openai-usage-monitor/
 ├── public/
 │   └── og.png            # Social preview card
 ├── tests/                # Production-render and public-safety checks
+├── AUTHORS.md            # Author biography and attribution
+├── CHANGELOG.md          # Release history
 ├── PRD.md                # Product requirements and roadmap
 └── README.md             # Project guide
 ```
@@ -167,6 +178,12 @@ npm run build
 
 ```bash
 npm run lint
+```
+
+### Run the complete validation suite
+
+```bash
+npm test
 ```
 
 ## Core data model
@@ -209,6 +226,9 @@ The configured reset time is stored under `usage-pulse-reset-at`.
 ## Documentation
 
 - [Product Requirements Document](PRD.md)
+- [Changelog](CHANGELOG.md)
+- [Author biography and attribution](AUTHORS.md)
+- [Release 1.5.0](https://github.com/xudaniel/daniel-openai-usage-monitor/releases/tag/v1.5.0)
 - [Official ChatGPT and Codex pricing documentation](https://learn.chatgpt.com/docs/pricing)
 - [OpenAI API Usage API](https://platform.openai.com/docs/api-reference/usage)
 
@@ -216,7 +236,16 @@ The API Usage endpoint applies to OpenAI API organization activity; it should no
 
 ## Status
 
-Usage Pulse is an early open-source release. It is suitable for personal tracking and product feedback, but its estimates should not be treated as invoices, billing records, or guaranteed capacity forecasts.
+Usage Pulse 1.5.0 is a public, local-first release suitable for personal tracking and product feedback. Its readings and estimates should not be treated as invoices, official billing records, or guaranteed capacity forecasts.
+
+## Author
+
+Usage Pulse was created and is maintained by **Daniel Xu**, a Toronto-based technology product leader, software builder, entrepreneur, and venture investor.
+
+- GitHub: [@xudaniel](https://github.com/xudaniel)
+- LinkedIn: [Daniel Xu](https://www.linkedin.com/in/danielxuvision/)
+- New Billionaires Club: [nbclub.ca](https://nbclub.ca)
+- Full biography: [AUTHORS.md](AUTHORS.md)
 
 ## Contributing
 

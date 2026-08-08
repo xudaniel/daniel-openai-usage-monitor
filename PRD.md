@@ -3,8 +3,9 @@
 | Field | Value |
 | --- | --- |
 | Product | Usage Pulse |
-| Document status | Draft for v1.0 |
-| Current release | v1.5 open-source release |
+| Document status | Active product specification and roadmap |
+| Current release | v1.5.0 open-source release |
+| Next target | Post-1.5 reliability and portability milestones |
 | Product type | Local-first personal usage dashboard |
 | Primary platform | Responsive web app |
 | Owner | Daniel Xu |
@@ -16,7 +17,7 @@ Usage Pulse helps individual Codex users understand and manage their available c
 
 The product is not intended to replace OpenAI’s official usage page. The official page remains the source of truth. Usage Pulse provides the analytical layer around that source: freshness, change, runway, thresholds, and historical context.
 
-The v1 product must remain explicit about the boundary between:
+The current product and all future releases must remain explicit about the boundary between:
 
 - **Account data:** values sourced from the official usage dashboard.
 - **Local calculations:** countdowns, freshness, changes, averages, and projections calculated by Usage Pulse.
@@ -66,7 +67,7 @@ Usage Pulse should feel less like a billing console and more like a fuel gauge w
 
 ## 5. Non-goals
 
-Usage Pulse v1 will not:
+Usage Pulse 1.5 and the planned core roadmap will not:
 
 - Replace or dispute OpenAI billing records.
 - Predict exact future credit consumption.
@@ -103,7 +104,7 @@ A user who purchases credits occasionally and wants to understand whether additi
 
 ### Future persona: workspace operator
 
-A Business, Enterprise, or Edu administrator with supported analytics access. This persona is out of scope for v1 and must not be mixed with the personal-credit experience.
+A Business, Enterprise, or Edu administrator with supported analytics access. This persona is outside the current roadmap and must not be mixed with the personal-credit experience.
 
 ## 7. Jobs to be done
 
@@ -151,14 +152,16 @@ Warnings should become stronger as the situation becomes more urgent, but the pr
 - Credit delta between readings
 - Basic runway calculation
 - Fixed low-credit threshold at 125
-- Fixed reset timestamp
+- User-configurable reset date and time stored locally
 - Responsive UI
 - Browser notification-permission preference
 - Link to the official usage dashboard
+- Production-render and public-safety tests
+- Open-source contribution, security, citation, and authorship documentation
 
-### Gaps to close for v1
+### Gaps to close after v1.5
 
-- Reset timestamp must be user-configurable and renewable.
+- Reset cadence and explicit timezone selection must be more robust.
 - Notification dispatch must work when thresholds are crossed.
 - Alert threshold must be configurable.
 - History must support export, import, and deletion.
@@ -351,7 +354,7 @@ type RunwayEstimate = {
 
 ## 16. Success metrics
 
-Because v1 is local-first, success measurement should avoid hidden behavioral tracking.
+Because the product is local-first, success measurement should avoid hidden behavioral tracking.
 
 ### Primary metrics
 
@@ -369,7 +372,7 @@ Because v1 is local-first, success measurement should avoid hidden behavioral tr
 - Users can explain why the runway estimate may change.
 - Users return after meaningful work sessions to add readings.
 
-Opt-in analytics may be introduced later, but v1 must work fully without telemetry.
+Opt-in analytics may be introduced later, but the product must work fully without telemetry.
 
 ## 17. Risks and mitigations
 
@@ -377,7 +380,7 @@ Opt-in analytics may be introduced later, but v1 must work fully without telemet
 | --- | --- | --- |
 | Users interpret a stale reading as live account data | High | Prominent freshness state and stale prompt |
 | Runway appears more precise than evidence supports | High | Minimum sample size, confidence label, estimate wording |
-| Hard-coded reset becomes inaccurate | High | Make reset user-configurable and prompt after it passes |
+| A configured reset becomes inaccurate or expires | High | Prompt after it passes and make cadence and timezone explicit |
 | Browser storage is cleared | Medium | Export/import and clear warning about local persistence |
 | Notification permission is denied | Low | Explain status and keep in-app warning states |
 | Undocumented account integration breaks trust | High | Prohibit private endpoints and credential collection |
@@ -386,10 +389,19 @@ Opt-in analytics may be introduced later, but v1 must work fully without telemet
 
 ## 18. Release plan
 
-### Milestone A — trustworthy local core
+### Released — v1.5.0 public local core
 
-- First-run setup
-- Configurable reset and timezone
+- Manual balance and allowance readings
+- Local history and freshness states
+- Configurable reset date and time
+- Basic runway estimation
+- Responsive dashboard
+- Public documentation, licensing, authorship, and safety checks
+
+### Milestone A — reliability and control
+
+- Improved first-run setup
+- Explicit timezone and reset cadence
 - Custom threshold
 - Reading correction and deletion
 - Robust validation
@@ -416,9 +428,9 @@ Opt-in analytics may be introduced later, but v1 must work fully without telemet
 - Evaluate a narrowly permissioned browser companion
 - Keep manual mode available regardless of automation
 
-## 19. v1 acceptance criteria
+## 19. Post-1.5 acceptance criteria
 
-The v1 release is ready when:
+The next major capability milestone is ready when:
 
 1. A first-time user can configure balance, weekly percentage, reset time, timezone, and threshold.
 2. No user-specific sample balance is shown before setup.
@@ -447,7 +459,7 @@ The v1 release is ready when:
 | Decision | Rationale |
 | --- | --- |
 | Keep the official usage page as source of truth | Avoids false authority and unsupported integrations |
-| Use local storage for v1 | Minimizes privacy risk and removes account infrastructure |
+| Use local storage for the core product | Minimizes privacy risk and removes account infrastructure |
 | Separate readings from estimates | Prevents calculated outputs from appearing official |
 | Keep purchasing outside the app | Avoids payment handling and manipulative spend flows |
 | Retain manual synchronization | Provides a durable fallback even if automation is unavailable |
