@@ -4,7 +4,7 @@
 | --- | --- |
 | Product | Usage Pulse |
 | Document status | Draft for v1.0 |
-| Current release | v0.1 private release |
+| Current release | v1.5 open-source release |
 | Product type | Local-first personal usage dashboard |
 | Primary platform | Responsive web app |
 | Owner | Daniel Xu |
@@ -143,7 +143,7 @@ Warnings should become stronger as the situation becomes more urgent, but the pr
 
 ## 9. Current-state assessment
 
-### Available in v0.1
+### Available in v1.5
 
 - Manual credit and weekly-percentage readings
 - Local storage of 30 readings

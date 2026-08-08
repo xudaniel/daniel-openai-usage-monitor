@@ -4,10 +4,10 @@ title: "Usage Pulse"
 type: software
 authors:
   - family-names: "Xu"
-    given-names: "Daniel Yuanpeng"
+    given-names: "Daniel"
     website: "https://github.com/xudaniel"
 repository-code: "https://github.com/xudaniel/daniel-openai-usage-monitor"
 url: "https://usage-pulse-daniel.danyelxu.chatgpt.site"
 license: MIT
-version: 0.1.0
+version: 1.5.0
 date-released: 2026-08-08

@@ -4,7 +4,7 @@
 
 > Know your Codex runway before it runs out.
 
-Created and maintained by **Daniel Xu** (full name: **Daniel Yuanpeng Xu**), available on GitHub as [@xudaniel](https://github.com/xudaniel). See [AUTHORS.md](AUTHORS.md) for the project authorship statement.
+Created and maintained by **Daniel Xu**, available on GitHub as [@xudaniel](https://github.com/xudaniel). See [AUTHORS.md](AUTHORS.md) for his professional biography and the project authorship statement.
 
 Usage Pulse is a private, local-first dashboard for monitoring Codex credits, included weekly usage, reset timing, and consumption pace. It turns two numbers from the official Codex usage page into a clearer operational view: **how much capacity is left, how quickly it is changing, and when action may be needed**.
 
@@ -103,7 +103,7 @@ No D1 database or R2 bucket is configured. Current usage history stays in browse
 
 Runway is an estimate, not a billing forecast. It uses the average credit decrease between saved readings that show consumption. Model choice, context size, reasoning effort, tools, images, and task duration can all change actual usage.
 
-## Known limitations in v0.1
+## Known limitations in v1.5
 
 - Balance synchronization is manual.
 - The alert preference and browser permission flow exist, but automatic threshold-notification dispatch is not yet complete.
