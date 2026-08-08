@@ -125,7 +125,7 @@ These limitations are addressed in the [Product Requirements Document](PRD.md) a
 ## Project structure
 
 ```text
-usage-pulse/
+daniel-openai-usage-monitor/
 ├── app/
 │   ├── globals.css       # Visual system and responsive layout
 │   ├── layout.tsx        # Metadata and social-preview configuration
@@ -147,8 +147,8 @@ usage-pulse/
 ### Start the app
 
 ```bash
-git clone https://github.com/xudaniel/usage-pulse.git
-cd usage-pulse
+git clone https://github.com/xudaniel/daniel-openai-usage-monitor.git
+cd daniel-openai-usage-monitor
 npm ci
 npm run dev
 ```

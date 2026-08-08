@@ -1,16 +1,16 @@
 {
-  "name": "usage-pulse",
+  "name": "daniel-openai-usage-monitor",
   "version": "0.1.0",
   "description": "A privacy-first, local dashboard for tracking Codex credits, weekly usage, reset timing, and runway.",
   "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xudaniel/usage-pulse.git"
+    "url": "https://github.com/xudaniel/daniel-openai-usage-monitor.git"
   },
   "homepage": "https://usage-pulse-daniel.danyelxu.chatgpt.site",
   "bugs": {
-    "url": "https://github.com/xudaniel/usage-pulse/issues"
+    "url": "https://github.com/xudaniel/daniel-openai-usage-monitor/issues"
   },
   "engines": {
     "node": ">=22.13.0"
