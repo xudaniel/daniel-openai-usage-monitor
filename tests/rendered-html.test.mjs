@@ -62,6 +62,7 @@ test("validates portable Usage Pulse imports", () => {
   }] }));
   assert.equal(payload.readings[0].credits, 450);
   assert.throws(() => parseUsageImport('{"readings":[{"id":"bad","credits":-1}]}'), /invalid reading/i);
+  assert.throws(() => parseUsageImport(JSON.stringify({ readings: Array.from({ length: 1_001 }) })), /safety limit/i);
 });
 
 test("exports spreadsheet-friendly CSV with escaped fields", () => {

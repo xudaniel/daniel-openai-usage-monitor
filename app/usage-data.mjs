@@ -19,6 +19,9 @@ export function parseUsageImport(text) {
   if (!payload || typeof payload !== "object" || !Array.isArray(payload.readings)) {
     throw new Error("This file is not a Usage Pulse export.");
   }
+  if (payload.readings.length > 1_000) {
+    throw new Error("The import exceeds the 1,000-reading safety limit.");
+  }
 
   const readings = payload.readings.map((reading) => {
     if (

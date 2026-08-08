@@ -55,12 +55,16 @@ function validTimezone(value: unknown): value is string {
 
 function normalizeSettings(value: unknown, fallback = defaultSettings()): Settings {
   const candidate = value && typeof value === "object" ? value as Partial<Settings> : {};
+  const finite = (input: unknown, defaultValue: number) => {
+    const parsed = Number(input);
+    return Number.isFinite(parsed) ? parsed : defaultValue;
+  };
   return {
-    lowCreditThreshold: Math.max(0, Math.round(Number(candidate.lowCreditThreshold ?? fallback.lowCreditThreshold))),
+    lowCreditThreshold: Math.max(0, Math.round(finite(candidate.lowCreditThreshold, fallback.lowCreditThreshold))),
     timezone: validTimezone(candidate.timezone) ? candidate.timezone : fallback.timezone,
-    resetCadenceDays: Math.max(1, Math.min(365, Math.round(Number(candidate.resetCadenceDays ?? fallback.resetCadenceDays)))),
-    retentionLimit: Math.max(5, Math.min(100, Math.round(Number(candidate.retentionLimit ?? fallback.retentionLimit)))),
-    staleAfterMinutes: Math.max(5, Math.min(10_080, Math.round(Number(candidate.staleAfterMinutes ?? fallback.staleAfterMinutes)))),
+    resetCadenceDays: Math.max(1, Math.min(365, Math.round(finite(candidate.resetCadenceDays, fallback.resetCadenceDays)))),
+    retentionLimit: Math.max(5, Math.min(100, Math.round(finite(candidate.retentionLimit, fallback.retentionLimit)))),
+    staleAfterMinutes: Math.max(5, Math.min(10_080, Math.round(finite(candidate.staleAfterMinutes, fallback.staleAfterMinutes)))),
     alertsEnabled: typeof candidate.alertsEnabled === "boolean" ? candidate.alertsEnabled : fallback.alertsEnabled,
     lowCreditAlerts: typeof candidate.lowCreditAlerts === "boolean" ? candidate.lowCreditAlerts : fallback.lowCreditAlerts,
     staleAlerts: typeof candidate.staleAlerts === "boolean" ? candidate.staleAlerts : fallback.staleAlerts,
@@ -141,7 +145,11 @@ export default function Home() {
     const defaults = defaultSettings();
     let storedSettings = defaults;
     try {
-      storedSettings = normalizeSettings(JSON.parse(window.localStorage.getItem(SETTINGS_KEY) ?? "{}"), defaults);
+      const rawSettings = window.localStorage.getItem(SETTINGS_KEY);
+      storedSettings = normalizeSettings(JSON.parse(rawSettings ?? "{}"), defaults);
+      if (!rawSettings && window.localStorage.getItem("usage-pulse-alerts") === "on") {
+        storedSettings = { ...storedSettings, alertsEnabled: "Notification" in window && Notification.permission === "granted" };
+      }
     } catch {
       // Invalid settings fall back to privacy-safe local defaults.
     }
@@ -222,6 +230,14 @@ export default function Home() {
     setHistoryOpen(false);
   }
 
+  function closeReadingEditor() {
+    setEditing(false);
+    setEditingId(null);
+    setCredits(latest?.credits ?? 0);
+    setWeeklyRemaining(latest?.weeklyRemaining ?? 0);
+    setReadingResetAt(resetAt);
+  }
+
   function saveReading() {
     const cleanCredits = Math.max(0, Math.round(credits));
     const cleanWeekly = Math.max(0, Math.min(100, Math.round(weeklyRemaining)));
@@ -291,9 +307,18 @@ export default function Home() {
       return;
     }
     let alertsEnabled = settingsDraft.alertsEnabled;
-    if (settingsDraft.alertsEnabled && "Notification" in window && Notification.permission !== "granted") {
-      const permission = await Notification.requestPermission();
-      if (permission !== "granted") alertsEnabled = false;
+    let alertsUnavailable = false;
+    if (settingsDraft.alertsEnabled) {
+      if (!("Notification" in window)) {
+        alertsEnabled = false;
+        alertsUnavailable = true;
+      } else if (Notification.permission !== "granted") {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          alertsEnabled = false;
+          alertsUnavailable = true;
+        }
+      }
     }
     const clean = normalizeSettings({ ...settingsDraft, alertsEnabled }, settings);
     const retained = readings.slice(-clean.retentionLimit);
@@ -303,7 +328,7 @@ export default function Home() {
     persistReadings(retained);
     window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(clean));
     setSettingsOpen(false);
-    setNotice("Settings saved.");
+    setNotice(alertsUnavailable ? "Settings saved. Browser notifications remain off because permission is unavailable." : "Settings saved.");
   }
 
   function scheduleNextReset() {
@@ -348,7 +373,9 @@ export default function Home() {
   async function importJson(file: File) {
     try {
       const imported = parseUsageImport(await file.text()) as { readings: Reading[]; settings?: Partial<Settings>; resetAt?: string };
-      const nextSettings = normalizeSettings(imported.settings, settings);
+      const importedSettings = normalizeSettings(imported.settings, settings);
+      const canNotify = "Notification" in window && Notification.permission === "granted";
+      const nextSettings = { ...importedSettings, alertsEnabled: importedSettings.alertsEnabled && canNotify };
       const nextReadings = imported.readings.slice(-nextSettings.retentionLimit);
       setSettings(nextSettings);
       setSettingsDraft(nextSettings);
@@ -362,7 +389,7 @@ export default function Home() {
       const nextLatest = nextReadings[nextReadings.length - 1];
       setCredits(nextLatest?.credits ?? 0);
       setWeeklyRemaining(nextLatest?.weeklyRemaining ?? 0);
-      setNotice(`${nextReadings.length} readings imported.`);
+      setNotice(`${nextReadings.length} readings imported.${importedSettings.alertsEnabled && !canNotify ? " Browser alerts remain off until permission is granted." : ""}`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "The import could not be read.");
     } finally {
@@ -437,12 +464,12 @@ export default function Home() {
       <section className="connectionStrip"><div><span className="connectionIcon">↻</span><div><strong>Local live mode</strong><p>Countdowns and alerts update continuously. Balance sync is manual because personal Codex credits do not have a documented public feed.</p></div></div><a href="https://chatgpt.com/codex/settings/usage" target="_blank" rel="noreferrer">Open official usage page ↗</a></section>
 
       {editing && <div className="modalBackdrop"><div className="modal" role="dialog" aria-modal="true" aria-labelledby="sync-title">
-        <div className="modalHeader"><div><p className="eyebrow">{editingId ? "EDIT SNAPSHOT" : "NEW SNAPSHOT"}</p><h2 id="sync-title">{editingId ? "Correct saved reading" : "Sync current usage"}</h2></div><button aria-label="Close" onClick={() => setEditing(false)}>×</button></div>
+        <div className="modalHeader"><div><p className="eyebrow">{editingId ? "EDIT SNAPSHOT" : "NEW SNAPSHOT"}</p><h2 id="sync-title">{editingId ? "Correct saved reading" : "Sync current usage"}</h2></div><button aria-label="Close" onClick={closeReadingEditor}>×</button></div>
         <label>Credits remaining<input type="number" min="0" value={credits} onChange={(event) => setCredits(Number(event.target.value))} /></label>
         <label>Weekly allowance remaining<input type="number" min="0" max="100" value={weeklyRemaining} onChange={(event) => setWeeklyRemaining(Number(event.target.value))} /><span>%</span></label>
         <label>Next weekly reset<input type="datetime-local" value={readingResetAt ? toLocalInputValue(readingResetAt) : ""} onChange={(event) => setReadingResetAt(event.target.value ? new Date(event.target.value).toISOString() : "")} /></label>
         <p className="modalHelp">Read these values from the official Codex usage page. This tracker stores the snapshot only in this browser.</p>
-        <div className="modalActions"><button className="ghostButton" onClick={() => setEditing(false)}>Cancel</button><button className="primaryButton" onClick={saveReading}>{editingId ? "Update reading" : "Save reading"}</button></div>
+        <div className="modalActions"><button className="ghostButton" onClick={closeReadingEditor}>Cancel</button><button className="primaryButton" onClick={saveReading}>{editingId ? "Update reading" : "Save reading"}</button></div>
       </div></div>}
 
       {settingsOpen && <div className="modalBackdrop"><div className="modal wideModal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
