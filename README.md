@@ -2,6 +2,7 @@
 
 [![Release](https://img.shields.io/badge/release-v1.5.0-2563eb.svg)](https://github.com/xudaniel/daniel-openai-usage-monitor/releases/tag/v1.5.0)
 [![MIT License](https://img.shields.io/badge/license-MIT-111827.svg)](LICENSE)
+[![CI](https://github.com/xudaniel/daniel-openai-usage-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/xudaniel/daniel-openai-usage-monitor/actions/workflows/ci.yml)
 
 > Know your Codex runway before it runs out.
 
